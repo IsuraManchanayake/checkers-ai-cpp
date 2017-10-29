@@ -1,4 +1,3 @@
-#include <algorithm>
 #include <ostream>
 
 #include "board.h"
@@ -151,6 +150,14 @@ namespace checkers_AI {
 
     std::vector<move*> board::list_all_moves() {
         std::vector<move*> moves;
+        for (int y = 0; y < board_height; y++) {
+            for (int x = 0; x < board_width; x++) {
+                if (!_board[y][x]->isEmpty) {
+                    std::vector<move*> piece_moves_ = list_all_moves(_board[y][x]);
+                    moves.insert(moves.end(), piece_moves_.begin(), piece_moves_.end());
+                }
+            }
+        }
         return moves;
     }
 
@@ -159,7 +166,7 @@ namespace checkers_AI {
     }
 
     bool board::_occupiable(const int & x, const int & y) const {
-        return _validate_position(x, y) && _board[x][y]->isEmpty;
+        return _validate_position(x, y) && _board[y][x]->isEmpty;
     }
 
     std::ostream& operator<<(std::ostream& os, board* board) {
