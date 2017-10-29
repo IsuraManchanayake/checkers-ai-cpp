@@ -3,6 +3,8 @@
 #include <ostream>
 #include <vector>
 
+#include "vec.h"
+
 namespace checkers_AI {
     class piece {
     public:
@@ -13,12 +15,12 @@ namespace checkers_AI {
         };
 
         piece(const int& x, const int& y, const color_type& col, const int& id);
+        piece(const vec& v, const color_type& col, const int& id);
         ~piece();
 
         static piece* make_empty();
 
-        int x;
-        int y;
+        vec pos;
         int id;
         bool isQueen = false;
         bool isEmpty = false;

@@ -10,7 +10,12 @@ namespace checkers_AI {
     piece* piece::_empty_piece = nullptr;
 
     piece::piece(const int & x, const int & y, const piece::color_type& color, const int& id)
-        : x(x), y(y), color(color), id(id) {}
+        : pos(x, y), color(color), id(id) {
+    }
+
+    piece::piece(const vec & v, const color_type & col, const int & id) 
+        : pos(v), color(color), id(id) {
+    }
 
     piece::~piece() {}
 

@@ -32,15 +32,14 @@ namespace checkers_AI {
 
     void board::execute_move(move * move) {
         if (!move->blance_piece->isEmpty) {
-            _board[move->blance_piece->y][move->blance_piece->x] = piece::make_empty();
+            _board[move->blance_piece->pos.y][move->blance_piece->pos.x] = piece::make_empty();
         }
-        _board[move->fy][move->fx] = piece::make_empty();
+        _board[move->from.y][move->from.x] = piece::make_empty();
         for (piece* capture_piece : move->capture_pieces) {
-            _board[capture_piece->y][capture_piece->x] = piece::make_empty();
+            _board[capture_piece->pos.y][capture_piece->pos.x] = piece::make_empty();
         }
-        _board[move->y][move->x] = move->mover;
-        move->mover->y = move->y;
-        move->mover->x = move->x;
+        _board[move->to.y][move->to.y] = move->mover;
+        move->mover->pos = move->to;
         if (move->is_promoting) {
             move->mover->isQueen = true;
         }
@@ -50,15 +49,14 @@ namespace checkers_AI {
         if (move->is_promoting) {
             move->mover->isQueen = false;
         }
-        _board[move->y][move->x] = piece::make_empty();
+        _board[move->to.y][move->to.x] = piece::make_empty();
         for (piece* captured_piece : move->capture_pieces) {
-            _board[captured_piece->y][captured_piece->x] = captured_piece;
+            _board[captured_piece->pos.y][captured_piece->pos.x] = captured_piece;
         }
-        _board[move->fy][move->fx] = move->mover;
-        move->mover->y = move->fy;
-        move->mover->x = move->fx;
+        _board[move->from.y][move->from.x] = move->mover;
+        move->mover->pos = move->from;
         if (!move->blance_piece->isEmpty) {
-            _board[move->blance_piece->y][move->blance_piece->x] = move->blance_piece;
+            _board[move->blance_piece->pos.y][move->blance_piece->pos.x] = move->blance_piece;
         }
     }
 
@@ -66,14 +64,11 @@ namespace checkers_AI {
         std::vector<move*> moves_;
         if (!mover->isEmpty) {
             if (mover->isQueen) {
-                for (int i = 0; i < 4; i++) {
-                    int dx_ = 2 * (i % 2) - 1;
-                    int dy_ = 2 * (i / 2) - 1;
+                for (vec& dir : vec::dirs) {
                     for (int j = 1; j < board_max_dim; j++) {
-                        int tx_ = j * dx_;
-                        int ty_ = j * dy_;
-                        if (_occupiable(tx_, ty_)) {
-                            moves_.push_back(new move(mover, tx_, ty_));
+                        vec to = j * dir;
+                        if (_occupiable(to)) {
+                            moves_.push_back(new move(mover, to));
                         }
                         else {
                             break;
@@ -83,14 +78,13 @@ namespace checkers_AI {
             }
             else {
                 int dir_ = mover->color == piece::color_type::RED ? 1 : -1;
-                int x0_ = mover->x + 1;
-                int x1_ = mover->x - 1;
-                int y_ = mover->y + dir_;
-                if (_occupiable(x0_, y_)) {
-                    moves_.push_back(new move(mover, x0_, y_));
+                vec to1_(mover->pos.x + 1, mover->pos.y + dir_);
+                vec to2_(mover->pos.x - 1, mover->pos.y + dir_);
+                if (_occupiable(to1_)) {
+                    moves_.push_back(new move(mover, to1_));
                 }
-                if (_occupiable(x1_, y_)) {
-                    moves_.push_back(new move(mover, x1_, y_));
+                if (_occupiable(to2_)) {
+                    moves_.push_back(new move(mover, to2_));
                 }
             }
             _list_more_captures(mover, moves_, std::vector<piece*>());
@@ -101,42 +95,35 @@ namespace checkers_AI {
     void board::_list_more_captures(piece* mover, std::vector<move*>& moves, std::vector<piece*>& captured) {
         if (!mover->isEmpty) {
             if (mover->isQueen) {
-                for (int i = 0; i < 4; i++) {
-                    int dx_ = 2 * (i % 2) - 1;
-                    int dy_ = 2 * (i / 2) - 1;
+                for (vec& dir : vec::dirs) {
                     for (int j = 2; j < board_max_dim; j++) {
-                        int cx_ = mover->x + (j - 1) * dx_;
-                        int cy_ = mover->y + (j - 1) * dy_;
-                        int tx_ = cx_ + dx_;
-                        int ty_ = cy_ + dy_;
-                        if (_occupiable(tx_, ty_) && !_board[cy_][cx_]->isEmpty && _board[cy_][cx_]->color != mover->color) {
-                            captured.push_back(_board[cy_][cx_]);
-                            for (; _occupiable(tx_, ty_); tx_ += dx_, ty_ += dy_) {
-                                move* move_ = new move(mover, tx_, ty_, captured);
-                                moves.push_back(move_);
-                                execute_move(move_);
-                                _list_more_captures(mover, moves, captured);
-                                reverse_move(move_);
-                            }
-                            captured.pop_back();
-                        }
-                        else {
-                            break;
+                        vec tpos_ = j * dir;
+                        vec cpos_ = tpos_ - dir;
+                        if (_occupiable(tpos_)
+                            && !_board[cpos_.y][cpos_.x]->isEmpty
+                            && _board[cpos_.y][cpos_.x]->color != mover->color) {
+                                captured.push_back(_board[cpos_.y][cpos_.x]);
+                                for (; _occupiable(tpos_); tpos_ += dir) {
+                                    move* move_ = new move(mover, tpos_, captured);
+                                    moves.push_back(move_);
+                                    execute_move(move_);
+                                    _list_more_captures(mover, moves, captured);
+                                    reverse_move(move_);
+                                }
+                                captured.pop_back();
                         }
                     }
                 }
             }
             else {
-                for (int i = 0; i < 4; i++) {
-                    int dx_ = 2 * (i % 2) - 1;
-                    int dy_ = 2 * (i / 2) - 1;
-                    int cx_ = mover->x + dx_;
-                    int cy_ = mover->y + dy_;
-                    int tx_ = cx_ + dx_;
-                    int ty_ = cy_ + dy_;
-                    if (_occupiable(tx_, ty_) && !_board[cy_][cx_]->isEmpty && _board[cy_][cx_]->color != mover->color) {
-                        captured.push_back(_board[cy_][cx_]);
-                        move* move_ = new move(mover, tx_, ty_, captured);
+                for (vec& dir : vec::dirs) {
+                    vec cpos_ = mover->pos + dir;
+                    vec tpos_ = cpos_ + dir;
+                    if (_occupiable(tpos_) 
+                            && !_board[cpos_.y][cpos_.x]->isEmpty 
+                            && _board[cpos_.y][cpos_.x]->color != mover->color) {
+                        captured.push_back(_board[cpos_.y][cpos_.x]);
+                        move* move_ = new move(mover, tpos_, captured);
                         moves.push_back(move_);
                         execute_move(move_);
                         _list_more_captures(mover, moves, captured);
@@ -161,12 +148,20 @@ namespace checkers_AI {
         return moves;
     }
 
-    bool board::_validate_position(const int & x, const int & y) const {
-        return x >= 0 && x < board_width && y >= 0 && y < board_height;
+    piece *& board::operator[](const vec & pos) {
+        return _board[pos.y][pos.x];
     }
 
-    bool board::_occupiable(const int & x, const int & y) const {
-        return _validate_position(x, y) && _board[y][x]->isEmpty;
+    piece * board::operator[](const vec & pos) const {
+        return _board[pos.y][pos.x];
+    }
+
+    bool board::_validate_position(const vec & pos) const {
+        return pos.x >= 0 && pos.x < board_width && pos.y >= 0 && pos.y < board_height;
+    }
+
+    bool board::_occupiable(const vec & pos) const {
+        return _validate_position(pos) && _board[pos.y][pos.x]->isEmpty;
     }
 
     std::ostream& operator<<(std::ostream& os, board* board) {

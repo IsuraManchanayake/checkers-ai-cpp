@@ -14,14 +14,14 @@ namespace checkers_AI {
         };
 
         move(piece* mover, const int& x, const int& y);
+        move(piece* mover, const vec& to);
         move(piece* mvoer, const int& x, const int& y, std::vector<piece*> capture_pieces);
+        move(piece* mvoer, const vec& to, std::vector<piece*> capture_pieces);
         ~move();
 
         piece* mover;
-        int fx;
-        int fy;
-        int x;
-        int y;
+        vec from;
+        vec to;
         piece* blance_piece = piece::make_empty();
         std::vector<piece*> capture_pieces;
         bool is_promoting = false;

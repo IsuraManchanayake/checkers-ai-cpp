@@ -24,9 +24,18 @@ void move_test_1() {
     cout << board << endl;
 }
 
+void move_test_2() {
+    checkers_AI::board* board = new checkers_AI::board();
+    std::vector<checkers_AI::move*> valid_moves = board->list_all_moves();
+    cout << board << endl;
+    for (auto& move : valid_moves) {
+        cout << move << endl;
+    }
+}
+
 int main(int argc, char** argv) {
 
-    move_test_1();
+    move_test_2();
 
     system("pause");
     return 0;
