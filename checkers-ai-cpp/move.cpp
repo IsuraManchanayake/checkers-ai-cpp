@@ -28,4 +28,19 @@ namespace checkers_AI {
             delete captured_piece;
         }
     }
+
+    std::ostream & operator<<(std::ostream & os, const move * move) {
+        os << (move->move_kind == move::move_kind_type::MOVE ? "move " : "capture ");
+        os << move->mover << " from (" << move->fy << "," << move->fx << ") to (" << move->y << "," << move->x << ")";
+        if (move->move_kind == move::move_kind_type::CAPTURE) {
+            os << " capturing ";
+            for (piece* capture_piece : move->capture_pieces) {
+                os << capture_piece << " ";
+            }
+        }
+        if (!move->blance_piece->isEmpty) {
+            os << " blancing " << move->blance_piece;
+        }
+        return os;
+    }
 }

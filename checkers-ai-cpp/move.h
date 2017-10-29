@@ -27,4 +27,6 @@ namespace checkers_AI {
         bool is_promoting = false;
         move_kind_type move_kind;
     };
+
+    std::ostream& operator<<(std::ostream& os, const move* move);
 }
