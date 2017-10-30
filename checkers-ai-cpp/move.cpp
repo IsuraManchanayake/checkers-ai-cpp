@@ -7,7 +7,7 @@ namespace checkers_AI {
         : to(to), from(mover->pos) {
         this->mover = mover;
         this->move_kind = move_kind_type::MOVE;
-        this->is_promoting = !mover->isQueen
+        this->is_promoting = !mover->is_queen
             && ((mover->color == piece::color_type::RED && to.y == board_height)
                 || (mover->color == piece::color_type::BLACK && to.y == 0));
     }
@@ -21,7 +21,7 @@ namespace checkers_AI {
         this->mover = mover;
         this->move_kind = move_kind_type::CAPTURE;
         this->capture_pieces = capture_pieces;
-        this->is_promoting = !mover->isQueen
+        this->is_promoting = !mover->is_queen
             && ((mover->color == piece::color_type::RED && to.y == board_height)
                 || (mover->color == piece::color_type::BLACK && to.y == 0));
     }
@@ -47,7 +47,7 @@ namespace checkers_AI {
                 os << capture_piece << " ";
             }
         }
-        if (!move->blance_piece->isEmpty) {
+        if (!move->blance_piece->is_empty) {
             os << " blancing " << move->blance_piece;
         }
         return os;

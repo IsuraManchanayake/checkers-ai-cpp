@@ -5,20 +5,30 @@
 namespace checkers_AI {
 
     board::board() {
-        for (int i = 0; i < board_height; i++) {
-            for (int j = 0; j < board_width; j++) {
-                _board[i][j] = piece::make_empty();
+        for (int y = 0; y < board_height; y++) {
+            for (int x = 0; x < board_width; x++) {
+                _board[y][x] = piece::make_empty();
             }
         }
         int count = 0;
-        for (int i = 0; i < board_height / 2 - 1; i++) {
-            for (int j = !(i & 1); j < board_width; j += 2) {
-                _board[i][j] = new piece(j, i, piece::color_type::RED, count++);
+        for (int y = 0; y < board_height / 2 - 1; y++) {
+            for (int x = !(y & 1); x < board_width; x += 2) {
+                _board[y][x] = new piece(x, y, piece::color_type::RED, count++);
             }
         }
-        for (int i = board_height / 2 + 1; i < board_height; i++) {
-            for (int j = !(i & 1); j < board_width; j += 2) {
-                _board[i][j] = new piece(j, i, piece::color_type::BLACK, count++);
+        for (int y = board_height / 2 + 1; y < board_height; y++) {
+            for (int x = !(y & 1); x < board_width; x += 2) {
+                _board[y][x] = new piece(x, y, piece::color_type::BLACK, count++);
+            }
+        }
+    }
+
+    board::board(const char(&char_repr)[board_height][board_width]) {
+        int id = 0;
+        for (int y = 0; y < board_height; y++) {
+            for (int x = 0; x < board_width; x++) {
+                _board[y][x] = new piece(vec(y, x), char_repr[y][x], id);
+                if (!_board[y][x]->is_empty) id++;
             }
         }
     }
@@ -31,7 +41,7 @@ namespace checkers_AI {
     }
 
     void board::execute_move(move * move) {
-        if (!move->blance_piece->isEmpty) {
+        if (!move->blance_piece->is_empty) {
             _board[move->blance_piece->pos.y][move->blance_piece->pos.x] = piece::make_empty();
         }
         _board[move->from.y][move->from.x] = piece::make_empty();
@@ -41,13 +51,13 @@ namespace checkers_AI {
         _board[move->to.y][move->to.y] = move->mover;
         move->mover->pos = move->to;
         if (move->is_promoting) {
-            move->mover->isQueen = true;
+            move->mover->is_queen = true;
         }
     }
 
     void board::reverse_move(move * move) {
         if (move->is_promoting) {
-            move->mover->isQueen = false;
+            move->mover->is_queen = false;
         }
         _board[move->to.y][move->to.x] = piece::make_empty();
         for (piece* captured_piece : move->capture_pieces) {
@@ -55,15 +65,15 @@ namespace checkers_AI {
         }
         _board[move->from.y][move->from.x] = move->mover;
         move->mover->pos = move->from;
-        if (!move->blance_piece->isEmpty) {
+        if (!move->blance_piece->is_empty) {
             _board[move->blance_piece->pos.y][move->blance_piece->pos.x] = move->blance_piece;
         }
     }
 
     std::vector<move*> board::list_all_moves(piece* mover) {
         std::vector<move*> moves_;
-        if (!mover->isEmpty) {
-            if (mover->isQueen) {
+        if (!mover->is_empty) {
+            if (mover->is_queen) {
                 for (vec& dir : vec::dirs) {
                     for (int j = 1; j < board_max_dim; j++) {
                         vec to = j * dir;
@@ -93,24 +103,24 @@ namespace checkers_AI {
     }
 
     void board::_list_more_captures(piece* mover, std::vector<move*>& moves, std::vector<piece*>& captured) {
-        if (!mover->isEmpty) {
-            if (mover->isQueen) {
+        if (!mover->is_empty) {
+            if (mover->is_queen) {
                 for (vec& dir : vec::dirs) {
                     for (int j = 2; j < board_max_dim; j++) {
                         vec tpos_ = j * dir;
                         vec cpos_ = tpos_ - dir;
                         if (_occupiable(tpos_)
-                            && !_board[cpos_.y][cpos_.x]->isEmpty
+                            && !_board[cpos_.y][cpos_.x]->is_empty
                             && _board[cpos_.y][cpos_.x]->color != mover->color) {
-                                captured.push_back(_board[cpos_.y][cpos_.x]);
-                                for (; _occupiable(tpos_); tpos_ += dir) {
-                                    move* move_ = new move(mover, tpos_, captured);
-                                    moves.push_back(move_);
-                                    execute_move(move_);
-                                    _list_more_captures(mover, moves, captured);
-                                    reverse_move(move_);
-                                }
-                                captured.pop_back();
+                            captured.push_back(_board[cpos_.y][cpos_.x]);
+                            for (; _occupiable(tpos_); tpos_ += dir) {
+                                move* move_ = new move(mover, tpos_, captured);
+                                moves.push_back(move_);
+                                execute_move(move_);
+                                _list_more_captures(mover, moves, captured);
+                                reverse_move(move_);
+                            }
+                            captured.pop_back();
                         }
                     }
                 }
@@ -119,9 +129,9 @@ namespace checkers_AI {
                 for (vec& dir : vec::dirs) {
                     vec cpos_ = mover->pos + dir;
                     vec tpos_ = cpos_ + dir;
-                    if (_occupiable(tpos_) 
-                            && !_board[cpos_.y][cpos_.x]->isEmpty 
-                            && _board[cpos_.y][cpos_.x]->color != mover->color) {
+                    if (_occupiable(tpos_)
+                        && !_board[cpos_.y][cpos_.x]->is_empty
+                        && _board[cpos_.y][cpos_.x]->color != mover->color) {
                         captured.push_back(_board[cpos_.y][cpos_.x]);
                         move* move_ = new move(mover, tpos_, captured);
                         moves.push_back(move_);
@@ -139,7 +149,7 @@ namespace checkers_AI {
         std::vector<move*> moves;
         for (int y = 0; y < board_height; y++) {
             for (int x = 0; x < board_width; x++) {
-                if (!_board[y][x]->isEmpty) {
+                if (!_board[y][x]->is_empty) {
                     std::vector<move*> piece_moves_ = list_all_moves(_board[y][x]);
                     moves.insert(moves.end(), piece_moves_.begin(), piece_moves_.end());
                 }
@@ -161,7 +171,7 @@ namespace checkers_AI {
     }
 
     bool board::_occupiable(const vec & pos) const {
-        return _validate_position(pos) && _board[pos.y][pos.x]->isEmpty;
+        return _validate_position(pos) && _board[pos.y][pos.x]->is_empty;
     }
 
     std::ostream& operator<<(std::ostream& os, board* board) {

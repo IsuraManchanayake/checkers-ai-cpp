@@ -10,6 +10,7 @@ namespace checkers_AI {
     class board {
     public:
         board();
+        board(const char (&char_repr)[board_height][board_width]);
         ~board();
 
         piece** operator[](const int& raw);

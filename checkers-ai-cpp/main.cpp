@@ -35,7 +35,7 @@ void move_test_2() {
 
 int main(int argc, char** argv) {
 
-    move_test_2();
+    move_test_1();
 
     system("pause");
     return 0;
