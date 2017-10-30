@@ -15,8 +15,9 @@ namespace checkers_AI {
 
         move(piece* mover, const int& x, const int& y);
         move(piece* mover, const vec& to);
-        move(piece* mvoer, const int& x, const int& y, std::vector<piece*> capture_pieces);
-        move(piece* mvoer, const vec& to, std::vector<piece*> capture_pieces);
+        move(piece* mover, const int& x, const int& y, std::vector<piece*> capture_pieces);
+        move(piece* mover, const vec& to, std::vector<piece*> capture_pieces);
+        move(piece* mover, const vec& from, const vec& to, std::vector<piece*> capture_pieces);
         ~move();
 
         piece* mover;

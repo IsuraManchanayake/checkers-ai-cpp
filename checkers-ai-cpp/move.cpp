@@ -16,7 +16,7 @@ namespace checkers_AI {
         : move(mover, vec(x, y)) {
     }
 
-    move::move(piece * mvoer, const vec & to, std::vector<piece*> capture_pieces) 
+    move::move(piece * mover, const vec & to, std::vector<piece*> capture_pieces) 
         : to(to), from(mover->pos) {
         this->mover = mover;
         this->move_kind = move_kind_type::CAPTURE;
@@ -26,7 +26,12 @@ namespace checkers_AI {
                 || (mover->color == piece::color_type::BLACK && to.y == 0));
     }
 
-    move::move(piece * mvoer, const int & x, const int & y, std::vector<piece*> capture_pieces)
+    move::move(piece * mover, const vec & from, const vec & to, std::vector<piece*> capture_pieces) 
+        : move(mover, to, capture_pieces) {
+        this->from = from;
+    }
+
+    move::move(piece * mover, const int & x, const int & y, std::vector<piece*> capture_pieces)
         : move(mover, vec(x, y), capture_pieces) {
     }
 
