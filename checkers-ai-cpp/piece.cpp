@@ -17,40 +17,45 @@ namespace checkers_AI {
         : pos(v), color(color), id(id) {
     }
 
-    piece::piece(const vec & v, const char & char_repr, const int & id)
-        : pos(v), id(id) {
-        switch (char_repr) {
-        case 'r':
-            color = color_type::RED;
-            is_queen = false;
-            break;
-        case 'R':
-            color = color_type::RED;
-            is_queen = true;
-            break;
-        case 'b':
-            color = color_type::BLACK;
-            is_queen = false;
-            break;
-        case 'B':
-            color = color_type::BLACK;
-            is_queen = true;
-            break;
-        default:
-            is_empty = true;
-            this->id = -1;
-            this->pos = vec(0, 0);
-        }
+    piece::piece() : pos(vec::zero), id(-1), color(color_type::EMPTY) {
     }
 
-    piece::~piece() {}
+    piece::~piece() {
+    }
 
     piece* piece::make_empty() {
         if (_empty_piece == nullptr) {
-            _empty_piece = new piece(0, 0, color_type::EMPTY, -1);
+            _empty_piece = new piece();
             _empty_piece->is_empty = true;
         }
         return _empty_piece;
+    }
+
+    piece * piece::create_piece(const vec & v, const char & char_repr, const int & id) {
+        piece* instance = new piece();
+        instance->id = id;
+        instance->pos = v;
+        switch (char_repr) {
+        case 'r':
+            instance->color = color_type::RED;
+            instance->is_queen = false;
+            break;
+        case 'R':
+            instance->color = color_type::RED;
+            instance->is_queen = true;
+            break;
+        case 'b':
+            instance->color = color_type::BLACK;
+            instance->is_queen = false;
+            break;
+        case 'B':
+            instance->color = color_type::BLACK;
+            instance->is_queen = true;
+            break;
+        default:
+            instance = make_empty();
+        }
+        return instance;
     }
 
     std::ostream & operator<<(std::ostream & os, piece* piece) {
@@ -77,5 +82,9 @@ namespace checkers_AI {
 #endif
         }
         return os;
+    }
+
+    piece::color_type operator!(piece::color_type color) {
+        return color == piece::color_type::RED ? piece::color_type::BLACK : piece::color_type::RED;
     }
 }
