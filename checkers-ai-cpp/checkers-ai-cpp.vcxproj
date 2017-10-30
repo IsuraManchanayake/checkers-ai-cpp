@@ -118,6 +118,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="board.cpp" />
+    <ClCompile Include="board_stat.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="move.cpp" />
     <ClCompile Include="piece.cpp" />
@@ -128,6 +129,7 @@
     <ClInclude Include="checkers_ai.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="enum.h" />
+    <ClInclude Include="board_stat.h" />
     <ClInclude Include="move.h" />
     <ClInclude Include="piece.h" />
     <ClInclude Include="vec.h" />

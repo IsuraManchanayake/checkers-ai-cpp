@@ -33,9 +33,32 @@ void move_test_2() {
     }
 }
 
+void create_board_test_1() {
+    checkers_AI::board* board = new checkers_AI::board({
+        { '-', '-', '-', '-', '-', '-', '-', '-', '-', '-' },
+        { 'r', '-', 'r', '-', 'r', '-', '-', '-', '-', '-' },
+        { '-', '-', '-', 'r', '-', '-', '-', '-', '-', '-' },
+        { '-', '-', '-', '-', '-', '-', 'B', '-', '-', '-' },
+        { '-', 'r', '-', 'r', '-', '-', '-', 'b', '-', '-' },
+        { '-', '-', '-', '-', 'b', '-', 'b', '-', '-', '-' },
+        { '-', '-', '-', '-', '-', '-', '-', '-', '-', '-' },
+        { '-', '-', '-', '-', '-', '-', '-', '-', '-', '-' },
+        { '-', '-', '-', '-', '-', '-', '-', '-', '-', '-' },
+        { '-', '-', '-', '-', '-', '-', '-', '-', '-', '-' },
+    });
+    //std::vector<checkers_AI::move*> valid_moves = board->list_all_moves();
+    //cout << board << endl;
+    //for (auto & move : valid_moves) {
+    //    cout << move << endl;
+    //    board->execute_move(move);
+    //    cout << board << endl;
+    //    board->reverse_move(move);
+    //}
+}
+
 int main(int argc, char** argv) {
 
-    move_test_1();
+    create_board_test_1();
 
     system("pause");
     return 0;

@@ -56,6 +56,7 @@ namespace checkers_AI {
         if (move->is_promoting) {
             move->mover->color == piece::color_type::RED ? r++, R-- : b++, B--;
         }
+        return *this;
     }
 
     std::ostream & operator<<(std::ostream & os, const board_stat *& stat) {
