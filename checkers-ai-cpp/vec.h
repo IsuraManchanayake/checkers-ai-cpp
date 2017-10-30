@@ -19,7 +19,8 @@ namespace checkers_AI {
 
         int x;
         int y;
-        static vec one;
+        static const vec one;
+        static const vec zero;
         static vec dirs[4];
     };
 }

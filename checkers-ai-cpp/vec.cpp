@@ -2,13 +2,15 @@
 
 namespace checkers_AI {
 
-    vec vec::one(1, 1);
+    const vec vec::one(1, 1);
+    const vec vec::zero(0, 0);
+
     vec vec::dirs[] = { vec(1, 1), vec(1, -1), vec(-1, -1), vec(-1, 1) };
     
     vec::vec(const int& x, const int& y) : x(x), y(y) {
     }
     
-    vec::vec() : x(0), y(0){
+    vec::vec() : vec(zero) {
     }
 
 
