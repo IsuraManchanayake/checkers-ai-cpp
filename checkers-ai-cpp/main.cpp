@@ -46,19 +46,23 @@ void create_board_test_1() {
         { '-', '-', '-', '-', '-', '-', '-', '-', '-', '-' },
         { '-', '-', '-', '-', '-', '-', '-', '-', '-', '-' },
     });
-    //std::vector<checkers_AI::move*> valid_moves = board->list_all_moves();
-    //cout << board << endl;
-    //for (auto & move : valid_moves) {
-    //    cout << move << endl;
-    //    board->execute_move(move);
-    //    cout << board << endl;
-    //    board->reverse_move(move);
-    //}
+    std::vector<checkers_AI::move*> valid_moves = board->list_all_moves();
+    cout << board << endl;
+    cout << board->stat << endl;
+    for (auto & move : valid_moves) {
+        cout << move << endl;
+        /*board->execute_move(move);
+        cout << board->stat << endl;
+        cout << board << endl;
+        board->reverse_move(move);*/
+    }
 }
+
+using namespace checkers_AI;
 
 int main(int argc, char** argv) {
 
-    create_board_test_1();
+    //create_board_test_1();
 
     system("pause");
     return 0;
