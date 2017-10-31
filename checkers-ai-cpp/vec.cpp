@@ -5,7 +5,7 @@ namespace checkers_AI {
     const vec vec::one(1, 1);
     const vec vec::zero(0, 0);
 
-    vec vec::dirs[] = { vec(1, 1), vec(1, -1), vec(-1, -1), vec(-1, 1) };
+    const vec vec::dirs[] = { vec(1, 1), vec(1, -1), vec(-1, -1), vec(-1, 1) };
     
     vec::vec(const int& x, const int& y) : x(x), y(y) {
     }

@@ -21,6 +21,6 @@ namespace checkers_AI {
         int y;
         static const vec one;
         static const vec zero;
-        static vec dirs[4];
+        static const vec dirs[4];
     };
 }
