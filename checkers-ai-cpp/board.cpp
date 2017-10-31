@@ -4,8 +4,15 @@
 #include "board.h"
 
 #define ITERATE_BOARD(x, y, code) \
-    for(int y = 0; y < board_height; y++) { \
+    for (int y = 0; y < board_height; y++) { \
         for (int x = !(y & 1); x < board_width; x += 2) { \
+            code \
+        } \
+    }
+
+#define ITERATE_ALL_BOARD(x, y, code) \
+    for (int y = 0; y < board_height; y++) { \
+        for (int x = 0; x < board_width; x++) { \
             code \
         } \
     }
@@ -13,11 +20,9 @@
 namespace checkers_AI {
 
     board::board() {
-        for (int y = 0; y < board_height; y++) {
-            for (int x = 0; x < board_width; x++) {
-                _board[y][x] = piece::make_empty();
-            }
-        }
+        ITERATE_ALL_BOARD(x, y,
+            _board[y][x] = piece::make_empty();
+        );
         int count = 0;
         for (int y = 0; y < board_height / 2 - 1; y++) {
             for (int x = !(y & 1); x < board_width; x += 2) {
@@ -35,15 +40,19 @@ namespace checkers_AI {
 
     board::board(const char(&char_repr)[board_height][board_width]) {
         int id = 0;
-        for (int y = 0; y < board_height; y++) {
-            for (int x = 0; x < board_width; x++) {
-                _board[y][x] = piece::create_piece(vec(x, y), char_repr[y][x], id);
-                if (!_board[y][x]->is_empty) id++;
-            }
-        }
+        ITERATE_ALL_BOARD(x, y, {
+            _board[y][x] = piece::create_piece(vec(x, y), char_repr[y][x], id);
+            *stat += _board[y][x];
+            if (!_board[y][x]->is_empty) id++;
+        });
     }
 
-    board::~board() {}
+    board::~board() {
+        ITERATE_BOARD(x, y, {
+            delete _board[y][x];
+        });
+        delete stat;
+    }
 
     piece** board::operator[](const int& raw) {
         return _board[raw];
@@ -92,7 +101,7 @@ namespace checkers_AI {
     void board::_list_more_captures(piece* mover, const vec start, std::vector<move*>& moves, std::vector<piece*> captured) {
         if (!mover->is_empty) {
             if (mover->is_queen) {
-                for (vec& dir : vec::dirs) {
+                for (const vec& dir : vec::dirs) {
                     for (int j = 2; j < board_max_dim; j++) {
                         vec tpos_ = mover->pos + j * dir;
                         vec cpos_ = tpos_ - dir;
@@ -112,7 +121,7 @@ namespace checkers_AI {
                 }
             }
             else {
-                for (vec& dir : vec::dirs) {
+                for (const vec& dir : vec::dirs) {
                     vec cpos_ = mover->pos + dir;
                     vec tpos_ = cpos_ + dir;
                     if (_occupiable(tpos_) && !_board[cpos_.y][cpos_.x]->is_empty && _board[cpos_.y][cpos_.x]->color != mover->color) {
@@ -132,7 +141,7 @@ namespace checkers_AI {
     bool board::_check_captures_available(piece * piece) {
         if (!piece->is_empty) {
             if (piece->is_queen) {
-                for (vec& dir : vec::dirs) {
+                for (const vec& dir : vec::dirs) {
                     for (int j = 2; j < board_max_dim; j++) {
                         vec tpos_ = piece->pos + j * dir;
                         vec cpos_ = tpos_ - dir;
@@ -143,7 +152,7 @@ namespace checkers_AI {
                 }
             }
             else {
-                for (vec& dir : vec::dirs) {
+                for (const vec& dir : vec::dirs) {
                     vec cpos_ = piece->pos + dir;
                     vec tpos_ = cpos_ + dir;
                     if (_occupiable(tpos_) && !_board[cpos_.y][cpos_.x]->is_empty && _board[cpos_.y][cpos_.x]->color != piece->color) {
@@ -170,7 +179,7 @@ namespace checkers_AI {
         std::vector<move*> moves_;
         if (!mover->is_empty) {
             if (mover->is_queen) {
-                for (vec& dir : vec::dirs) {
+                for (const vec& dir : vec::dirs) {
                     for (int j = 1; j < board_max_dim; j++) {
                         vec to_ = mover->pos + j * dir;
                         if (_occupiable(to_)) {

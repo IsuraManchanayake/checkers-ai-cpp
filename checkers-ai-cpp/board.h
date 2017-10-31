@@ -14,7 +14,7 @@ namespace checkers_AI {
         board(const char (&char_repr)[board_height][board_width]);
         ~board();
 
-        board_stat* stat;
+        board_stat* stat = new board_stat();
 
         piece** operator[](const int& raw);
         void execute_move(move* move);
