@@ -59,10 +59,14 @@ namespace checkers_AI {
         return *this;
     }
 
-    std::ostream & operator<<(std::ostream & os, const board_stat *& stat) {
-        os << "board statistics - r: " << stat->r << " b: " << stat->b << " R: " 
-           << stat->R << " B: " << stat->B << std::endl
-           << "total pieces - red: " << stat->r + stat->R << " black: " << stat->b + stat->B;
+    const int board_stat::get_count(piece::color_type color) {
+        return color == piece::color_type::RED ? r + R : b + B;
+    }
+
+    std::ostream & operator<<(std::ostream & os, board_stat *& stat) {
+        os << "board statistics - [r:" << stat->r << "][b:" << stat->b << "][R:" 
+           << stat->R << "][B:" << stat->B << "]" << std::endl
+           << "total pieces - red: " << stat->get_count(piece::color_type::RED) << " black: " << stat->get_count(piece::color_type::BLACK);
         return os;
     }
 }

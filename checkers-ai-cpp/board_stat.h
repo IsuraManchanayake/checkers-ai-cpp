@@ -20,7 +20,9 @@ namespace checkers_AI {
         board_stat & operator-=(const piece* piece);
         board_stat & operator+=(const move* move);
         board_stat & operator-=(const move* move);
+
+        const int get_count(piece::color_type color);
     };
 
-    std::ostream & operator<<(std::ostream & os, const board_stat* & stat);
+    std::ostream & operator<<(std::ostream & os, board_stat* & stat);
 }
