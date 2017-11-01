@@ -2,6 +2,7 @@
 
 #include <ostream>
 
+#include "enum.h"
 #include "move.h"
 
 namespace checkers_AI {
@@ -22,6 +23,7 @@ namespace checkers_AI {
         board_stat & operator-=(const move* move);
 
         const int get_count(piece::color_type color);
+        const game_result get_board_result();
     };
 
     std::ostream & operator<<(std::ostream & os, board_stat* & stat);

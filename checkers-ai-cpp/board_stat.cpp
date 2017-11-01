@@ -63,6 +63,21 @@ namespace checkers_AI {
         return color == piece::color_type::RED ? r + R : b + B;
     }
 
+    const game_result board_stat::get_board_result() {
+        int r_count = r + R;
+        int b_count = b + B;
+        if (r_count == 0 && b_count == 0) {
+            return game_result::N_DEFINED;
+        }
+        if (r_count == 0) {
+            return game_result::RED;
+        }
+        if (b_count == 0) {
+            return game_result::BLACK;
+        }
+        return game_result::PLAY;
+    }
+
     std::ostream & operator<<(std::ostream & os, board_stat *& stat) {
         os << "board statistics - [r:" << stat->r << "][b:" << stat->b << "][R:" 
            << stat->R << "][B:" << stat->B << "]" << std::endl
