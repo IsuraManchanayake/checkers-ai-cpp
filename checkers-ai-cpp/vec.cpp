@@ -48,7 +48,7 @@ namespace checkers_AI {
     }
 
     std::ostream & operator<<(std::ostream & os, const vec & rhs) {
-        os << "(" << (char)(rhs.y + 65) << rhs.x << ")";
+        os << "(" << (char)(rhs.x + 65) << rhs.y << ")";
         return os;
     }
 }
