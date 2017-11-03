@@ -21,7 +21,7 @@ namespace checkers_AI {
         void reverse_move(move* move);
         std::vector<move*> list_all_moves(); // use only for testing
         std::vector<move*> list_all_moves(move* last_move, piece* piece);
-        std::vector<move*> list_all_moves(move* last_move);
+        std::vector<move*> list_all_moves(move* last_move, piece::color_type color);
         std::vector<piece*> list_all_blance_pieces(move* last_move);
         piece* & operator[](const vec & pos);
         piece* operator[](const vec & pos) const;

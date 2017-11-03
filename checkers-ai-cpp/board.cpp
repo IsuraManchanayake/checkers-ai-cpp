@@ -4,18 +4,16 @@
 #include "board.h"
 
 #define ITERATE_BOARD(x, y, code) \
-    for (int y = 0; y < board_height; y++) { \
+    for (int y = 0; y < board_height; y++) \
         for (int x = !(y & 1); x < board_width; x += 2) { \
             code \
         } \
-    }
 
 #define ITERATE_ALL_BOARD(x, y, code) \
-    for (int y = 0; y < board_height; y++) { \
+    for (int y = 0; y < board_height; y++) \
         for (int x = 0; x < board_width; x++) { \
             code \
         } \
-    }
 
 namespace checkers_AI {
 
@@ -193,8 +191,8 @@ namespace checkers_AI {
             }
             else {
                 int dir_ = mover->color == piece::color_type::RED ? 1 : -1;
-                vec to1_(mover->pos.x + 1, mover->pos.y + dir_);
-                vec to2_(mover->pos.x - 1, mover->pos.y + dir_);
+                vec to1_(mover->pos.x - 1, mover->pos.y + dir_);
+                vec to2_(mover->pos.x + 1, mover->pos.y + dir_);
                 if (_occupiable(to1_)) {
                     moves_.push_back(new move(mover, to1_));
                 }
@@ -209,14 +207,20 @@ namespace checkers_AI {
 
     std::vector<piece*> board::list_all_blance_pieces(move* last_move) {
         std::vector<piece*> blance_pieces_;
-        if (last_move->move_kind == move::move_kind_type::MOVE) {
+        if (last_move && last_move->move_kind == move::move_kind_type::MOVE) {
             _reverse_move(last_move);
+            if (!last_move->blance_piece->is_empty) {
+                _board[last_move->blance_piece->pos.y][last_move->blance_piece->pos.x] = piece::make_empty();
+            }
             ITERATE_BOARD(x, y,
-                if (_board[y][x]->color != last_move->mover->color && _check_captures_available(_board[y][x])) {
+                if (_board[y][x]->color == last_move->mover->color && _check_captures_available(_board[y][x])) {
                     blance_pieces_.push_back(_board[y][x]);
                 }
             )
-                _execute_move(last_move);
+                if (!last_move->blance_piece->is_empty) {
+                    _board[last_move->blance_piece->pos.y][last_move->blance_piece->pos.x] = last_move->blance_piece;
+                }
+            _execute_move(last_move);
         }
         return blance_pieces_;
     }
@@ -244,12 +248,12 @@ namespace checkers_AI {
         return moves_;
     }
 
-    std::vector<move*> board::list_all_moves(move * last_move) {
+    std::vector<move*> board::list_all_moves(move * last_move, piece::color_type color) {
         std::vector<piece*> blance_pieces_ = list_all_blance_pieces(last_move);
-        std::vector<move*> moves_ = _list_all_raw_moves(!last_move->mover->color);
+        std::vector<move*> moves_ = _list_all_raw_moves(color);
         for (piece* blanced_piece : blance_pieces_) {
             _board[blanced_piece->pos.y][blanced_piece->pos.x] = piece::make_empty();
-            std::vector<move*> moves_after_blance = _list_all_raw_moves(!last_move->mover->color);
+            std::vector<move*> moves_after_blance = _list_all_raw_moves(color);
             for (move* move_ : moves_after_blance) {
                 move_->blance_piece = blanced_piece;
             }
@@ -276,21 +280,21 @@ namespace checkers_AI {
     }
 
     std::ostream& operator<<(std::ostream& os, board* board) {
-        os << "         ";
+        os << "      ";
         for (int i = 0; i < board_width; i++) {
-            os << "  " << i << "   ";
+            os << "  " << (char)(i + 65) << "   ";
         }
-        os << std::endl << "        +";
+        os << std::endl << "     +";
         for (int i = 0; i < board_width; i++) {
             os << "-----+";
         }
         os << std::endl;
         for (int i = 0; i < board_height; i++) {
-            os << "  " << i << "(" << (char)(i + 65) << ")" << "  |";
+            os << "  " << i << "  |";
             for (int j = 0; j < board_width; j++) {
                 os << " " << (*board)[i][j] << " |";
             }
-            os << std::endl << "        +";
+            os << std::endl << "     +";
             for (int j = 0; j < board_width; j++) {
                 os << "-----+";
             }
