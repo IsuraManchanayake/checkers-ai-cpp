@@ -33,7 +33,7 @@
     <ClCompile Include="board_stat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="standard_evaluator.cpp">
+    <ClCompile Include="default_evaluator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -65,10 +65,16 @@
     <ClInclude Include="evaluator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="standard_evaluator.h">
+    <ClInclude Include="move_resolver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="move_resolver.h">
+    <ClInclude Include="game_bot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="default_evaluator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cmd_game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

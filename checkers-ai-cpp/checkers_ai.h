@@ -1,4 +1,3 @@
 #pragma once
 
-#include "board.h"
-#include "move_resolver.h"
+#include "cmd_game.h"
