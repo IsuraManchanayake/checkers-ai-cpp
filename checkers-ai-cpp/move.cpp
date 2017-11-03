@@ -36,11 +36,6 @@ namespace checkers_AI {
     }
 
     move::~move() {
-        delete mover;
-        delete blance_piece;
-        for (piece* captured_piece : capture_pieces) {
-            delete captured_piece;
-        }
     }
 
     std::ostream & operator<<(std::ostream & os, const move * move) {
