@@ -3,11 +3,11 @@
 #include "evaluator.h"
 
 namespace checkers_AI {
-    class standard_evaluator : public evaluator<int>
+    class default_evaluator : public evaluator<int>
     {
     public:
-        standard_evaluator();
-        ~standard_evaluator();
+        default_evaluator();
+        ~default_evaluator();
 
         const int evaluate(const board* board, const piece::color_type color);
     };
