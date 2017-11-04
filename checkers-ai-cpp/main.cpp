@@ -10,20 +10,22 @@ using namespace checkers_AI;
 
 void move_test_1() {
     board* board_ = new board();
-    move* move_ = new move((*board_)[3][0], 1, 4);
+    move move_((*board_)[3][0], 1, 4);
     board_->execute_move(move_);
     cout << board_ << endl << endl;
     board_->reverse_move(move_);
     cout << board_ << endl;
+    delete board_;
 }
 
 void move_test_2() {
     board* board_ = new board();
-    std::vector<move*> valid_moves = board_->list_all_moves();
+    std::vector<move> valid_moves = board_->list_all_moves();
     cout << board_ << endl;
     for (auto& move : valid_moves) {
         cout << move << endl;
     }
+    delete board_;
 }
 
 void create_board_test_1() {
@@ -39,7 +41,7 @@ void create_board_test_1() {
         { '-', '-', '-', '-', '-', '-', '-', '-', '-', '-' },
         { '-', '-', '-', '-', '-', '-', '-', '-', '-', '-' },
     });
-    std::vector<move*> valid_moves = board_->list_all_moves();
+    std::vector<move> valid_moves = board_->list_all_moves();
     cout << board_ << endl;
     cout << board_->stat << endl;
     for (auto & move : valid_moves) {
@@ -49,6 +51,7 @@ void create_board_test_1() {
         cout << board << endl;
         board->reverse_move(move);*/
     }
+    delete board_;
 }
 
 void move_test_3() {
@@ -65,24 +68,26 @@ void move_test_3() {
         { '-', '-', '-', '-', '-', '-', '-', '-', '-', '-' },   // 8
         { '-', '-', '-', '-', '-', '-', '-', '-', '-', '-' },   // 9
     });
-    move* move1 = new move((*board_)[5][2], 3, 4);
+    move move1((*board_)[5][2], 3, 4);
     board_->execute_move(move1);
     cout << move1 << endl << board_ << endl;
-    move* move2 = new move((*board_)[5][4], 3, 6);
+    move move2((*board_)[5][4], 3, 6);
     board_->execute_move(move2);
     cout << move2 << endl << board_ << endl;
     cout << "########################################################################################################\n";
-    for (auto& move : board_->list_all_moves(move2, piece::color_type::BLACK)) {
+    for (auto& move : board_->list_all_moves(move2, piece::color_type::black)) {
         cout << move << endl;
         board_->execute_move(move);
         cout << board_ << endl;
         board_->reverse_move(move);
     }
+    delete board_;
 }
 
 void game_test_1() {
     cmd_game<> * game = new cmd_game<>();
     game->start_game();
+    delete game;
 }
 
 int main(int argc, char** argv) {

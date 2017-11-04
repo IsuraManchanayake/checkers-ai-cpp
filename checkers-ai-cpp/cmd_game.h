@@ -19,7 +19,7 @@ namespace checkers_AI {
 
     template<typename eval_type>
     inline cmd_game<eval_type>::cmd_game() {
-        bot = new game_bot<eval_type>(game_bot<eval_type>::color_type::RED);
+        bot = new game_bot<eval_type>(game_bot<eval_type>::color_type::red);
     }
 
     template<typename eval_type>
@@ -31,7 +31,7 @@ namespace checkers_AI {
     inline void cmd_game<eval_type>::start_game() {
         while (true) {
             if (bot->current == bot->bot_color) {
-                move* bot_move_ = bot->get_next_move();
+                move bot_move_ = bot->get_next_move();
                 std::cout << "Bot moved " << bot_move_ << std::endl << std::endl;
                 std::cout << "Elapsed time: " << bot->elapsed_time / 1000.0 << " ms" << std::endl;
                 std::cout << "Average time: " << bot->avg_time / 1000.0 << " ms" << std::endl;
@@ -41,7 +41,7 @@ namespace checkers_AI {
             }
             else {
                 std::cout << bot->_board << std::endl;
-                std::vector<move*> user_moves_ = bot->list_all_user_moves();
+                std::vector<move> user_moves_ = bot->list_all_user_moves();
                 for (unsigned int i = 0; i < user_moves_.size(); i++) {
                     std::cout << i << ": " << user_moves_[i] << std::endl;
                 }
@@ -50,9 +50,6 @@ namespace checkers_AI {
                 std::cin >> user_move_id_;
                 while (user_move_id_ < 0 || user_move_id_ >= user_moves_.size()) std::cin >> user_move_id_;
                 bot->execute_move(user_moves_[user_move_id_]);
-                for (auto & move : user_moves_) 
-                    if (user_moves_[user_move_id_] != move)
-                        delete move;
             }
         }
     }
