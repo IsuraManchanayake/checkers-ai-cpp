@@ -9,9 +9,9 @@ namespace checkers_AI {
     class piece {
     public:
         enum class color_type {
-            EMPTY,
-            RED,
-            BLACK
+            empty,
+            red,
+            black
         };
 
         piece(const int& x, const int& y, const color_type& col, const int& id);

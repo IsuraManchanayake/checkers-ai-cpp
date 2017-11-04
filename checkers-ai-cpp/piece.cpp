@@ -17,7 +17,7 @@ namespace checkers_AI {
         : pos(v), color(color), id(id) {
     }
 
-    piece::piece() : pos(vec::zero), id(-1), color(color_type::EMPTY) {
+    piece::piece() : pos(vec::zero), id(-1), color(color_type::empty) {
     }
 
     piece::~piece() {
@@ -37,19 +37,19 @@ namespace checkers_AI {
         instance->pos = v;
         switch (char_repr) {
         case 'r':
-            instance->color = color_type::RED;
+            instance->color = color_type::red;
             instance->is_queen = false;
             break;
         case 'R':
-            instance->color = color_type::RED;
+            instance->color = color_type::red;
             instance->is_queen = true;
             break;
         case 'b':
-            instance->color = color_type::BLACK;
+            instance->color = color_type::black;
             instance->is_queen = false;
             break;
         case 'B':
-            instance->color = color_type::BLACK;
+            instance->color = color_type::black;
             instance->is_queen = true;
             break;
         default:
@@ -63,13 +63,13 @@ namespace checkers_AI {
             os << "   ";
         }
         else {
-            char piece_char = piece->color == piece::color_type::RED ? 'r' : 'b';
+            char piece_char = piece->color == piece::color_type::red ? 'r' : 'b';
             piece_char = piece->is_queen ? piece_char ^ (1 << 5) : piece_char;
 #ifdef _WIN32
             CONSOLE_SCREEN_BUFFER_INFO csbi;
             HANDLE hstdout = GetStdHandle(STD_OUTPUT_HANDLE);
             GetConsoleScreenBufferInfo(hstdout, &csbi);
-            SetConsoleTextAttribute(hstdout, piece->color == piece::color_type::RED ? 12 : 9);
+            SetConsoleTextAttribute(hstdout, piece->color == piece::color_type::red ? 12 : 9);
 #elif __linux__
             os << "\033[" << piece->color == piece::color_type::RED ? 31 : 34 << "m";
 #endif
@@ -85,6 +85,6 @@ namespace checkers_AI {
     }
 
     piece::color_type operator!(piece::color_type color) {
-        return color == piece::color_type::RED ? piece::color_type::BLACK : piece::color_type::RED;
+        return color == piece::color_type::red ? piece::color_type::black : piece::color_type::red;
     }
 }
