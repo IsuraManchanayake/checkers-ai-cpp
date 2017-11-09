@@ -36,6 +36,9 @@
     <ClCompile Include="default_evaluator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="nero_evaluator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="piece.h">
@@ -75,6 +78,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cmd_game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="nero_evaluator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot_game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -17,7 +17,8 @@ namespace checkers_AI {
         : pos(v), color(color), id(id) {
     }
 
-    piece::piece() : pos(vec::zero), id(-1), color(color_type::empty) {
+    piece::piece()
+        : pos(vec::zero), id(-1), color(color_type::empty) {
     }
 
     piece::~piece() {

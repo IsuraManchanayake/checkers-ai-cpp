@@ -85,14 +85,20 @@ void move_test_3() {
 }
 
 void game_test_1() {
-    cmd_game<> * game = new cmd_game<>();
+    cmd_game<nero_evaluator> * game = new cmd_game<nero_evaluator>();
+    game->start_game();
+    delete game;
+}
+
+void game_test_2() {
+    bot_game<default_evaluator, nero_evaluator> * game = new bot_game<default_evaluator, nero_evaluator>();
     game->start_game();
     delete game;
 }
 
 int main(int argc, char** argv) {
 
-    game_test_1();
+    game_test_2();
 
     system("pause");
     return 0;

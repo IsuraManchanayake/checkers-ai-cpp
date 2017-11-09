@@ -17,7 +17,7 @@ namespace checkers_AI {
 
         game_bot(color_type bot_color);
         ~game_bot();
-        
+
         board* _board;
         move last_move = move::create_empty();
         color_type bot_color;
@@ -35,7 +35,7 @@ namespace checkers_AI {
         std::vector<move> list_all_moves(color_type color);
         std::vector<move> list_all_user_moves();
     };
-    
+
     template<typename eval_type>
     inline game_bot<eval_type>::game_bot(color_type bot_color)
         : bot_color(bot_color) {
@@ -53,7 +53,7 @@ namespace checkers_AI {
             move_resolver<eval_type> resolver_;
             std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
             move move_ = resolver_.resolve(_board, last_move, bot_color);
-            std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now(); 
+            std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
 
             last_evaluated_nodes = resolver_.evaluated;
             last_move = move_;
@@ -63,7 +63,8 @@ namespace checkers_AI {
 
             elapsed_time = std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count();
             avg_time = (avg_time * (bot_move_count - 1) + elapsed_time) / bot_move_count;
-            avg_time_per_node = (avg_time_per_node * (bot_move_count - 1) + elapsed_time / last_evaluated_nodes) / bot_move_count;
+            if (last_evaluated_nodes > 0)
+                avg_time_per_node = (avg_time_per_node * (bot_move_count - 1) + elapsed_time / last_evaluated_nodes) / bot_move_count;
 
             return move_;
         }
