@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <random>
 
 #include "board.h"
 #include "enum.h"
@@ -61,15 +62,15 @@ namespace checkers_AI {
         sort(valid_moves_.begin(), valid_moves_.end(),
             [](const move& move_1, const move& move_2) { return move_1.capture_pieces.size() > move_2.capture_pieces.size(); });
         move best_move_ = move::create_empty();
-        res_type alpha = eval_type::min_value;
-        res_type beta = eval_type::max_value;
-        std::random_shuffle(valid_moves_.begin(), valid_moves_.end());
+        res_type alpha_ = eval_type::min_value;
+        res_type beta_ = eval_type::max_value;
+        std::shuffle(valid_moves_.begin(), valid_moves_.end(), std::default_random_engine(std::random_device()()));
         for (auto & move : valid_moves_) {
             board->execute_move(move);
-            res_type v_ = _a_b_prune(board, alpha, beta, !color, move, _depth - 1);
+            res_type v_ = _a_b_prune(board, alpha_, beta_, !color, move, _depth - 1);
             board->reverse_move(move);
-            if (v_ > alpha) {
-                alpha = v_;
+            if (v_ > alpha_) {
+                alpha_ = v_;
                 best_move_ = move;
             }
         }
