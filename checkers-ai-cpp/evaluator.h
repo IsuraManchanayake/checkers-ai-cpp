@@ -13,6 +13,6 @@ namespace checkers_AI {
         static const res_type win_value;
         static const res_type lost_value;
         static const res_type draw_value;
-        virtual const res_type evaluate(const board * board, const piece::color_type) = 0;
+        virtual const res_type evaluate(board * board, const piece::color_type) = 0;
     }; 
 }

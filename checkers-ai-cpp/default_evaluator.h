@@ -11,6 +11,6 @@ namespace checkers_AI {
         default_evaluator();
         ~default_evaluator();
 
-        const int evaluate(const board* board, const piece::color_type color);
+        const int evaluate(board* board, const piece::color_type color);
     };
 }

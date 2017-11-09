@@ -16,7 +16,7 @@ namespace checkers_AI {
     default_evaluator::~default_evaluator() {
     }
 
-    const int default_evaluator::evaluate(const board * board, piece::color_type color) {
+    const int default_evaluator::evaluate(board * board, piece::color_type color) {
         int score = board->stat->r - board->stat->b + 10 * (board->stat->R - board->stat->B);
         return color == piece::color_type::red ? score : -score;
     }
