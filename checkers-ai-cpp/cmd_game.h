@@ -7,8 +7,7 @@
 
 namespace checkers_AI {
     template<typename eval_type = default_evaluator>
-    class cmd_game {
-    public:
+    struct cmd_game {
         cmd_game();
         ~cmd_game();
 
@@ -32,11 +31,11 @@ namespace checkers_AI {
         while (true) {
             if (bot->current == bot->bot_color) {
                 move bot_move_ = bot->get_next_move();
-                std::cout << "Bot moved " << bot_move_ << std::endl << std::endl;
-                std::cout << "Elapsed time: " << bot->elapsed_time / 1000.0 << " ms" << std::endl;
-                std::cout << "Average time: " << bot->avg_time / 1000.0 << " ms" << std::endl;
-                std::cout << "Evaluated nodes: " << bot->last_evaluated_nodes << std::endl;
-                std::cout << "Average time per node: " << bot->avg_time_per_node / 1000.0<< " ms" << std::endl
+                std::cout << std::endl << "Bot moved " << bot_move_ << std::endl << std::endl
+                    << "Elapsed time: " << bot->elapsed_time / 1000.0 << " ms" << std::endl
+                    << "Average time: " << bot->avg_time / 1000.0 << " ms" << std::endl
+                    << "Evaluated nodes: " << bot->last_evaluated_nodes << std::endl
+                    << "Average time per node: " << bot->avg_time_per_node / 1000.0 << " ms" << std::endl
                     << std::endl;
             }
             else {
