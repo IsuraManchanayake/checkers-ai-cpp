@@ -10,13 +10,6 @@ namespace checkers_AI {
     vec::vec(const int& x, const int& y) : x(x), y(y) {
     }
     
-    vec::vec() : vec(zero) {
-    }
-
-
-    vec::~vec() {
-    }
-
     vec & vec::operator+=(const vec & rhs) {
         x += rhs.x;
         y += rhs.y;

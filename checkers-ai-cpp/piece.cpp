@@ -21,9 +21,6 @@ namespace checkers_AI {
         : pos(vec::zero), id(-1), color(color_type::empty) {
     }
 
-    piece::~piece() {
-    }
-
     piece* piece::make_empty() {
         if (_empty_piece == nullptr) {
             _empty_piece = new piece();
