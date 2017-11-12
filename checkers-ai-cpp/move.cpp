@@ -37,9 +37,6 @@ namespace checkers_AI {
         : move(mover, vec(x, y), capture_pieces) {
     }
 
-    move::~move() {
-    }
-
     move move::create_empty() {
         if (_empty_move == nullptr) {
             _empty_move = new move(piece::make_empty(), vec::zero);
