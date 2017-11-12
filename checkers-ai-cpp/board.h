@@ -9,6 +9,10 @@
 #include "piece.h"
 
 namespace checkers_AI {
+    /**
+     * @brief 
+     * 
+     */
     class board {
     public:
         board();
