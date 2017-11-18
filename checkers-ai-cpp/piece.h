@@ -157,7 +157,8 @@ namespace checkers_AI {
     //
 
     /**
-     * @brief Writes a piece object to given ostream
+     * @brief Writes a piece object to given ostream. Red color is used for red pieces and blue 
+     * is used for black pieces. 
      * 
      * @param os ostream to write.
      * @param piece piece pointer to write.

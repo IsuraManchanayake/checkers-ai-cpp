@@ -12,25 +12,91 @@
 
 namespace checkers_AI {
 
+    /**
+     * @brief Resolves the next move by using alpha beta pruning.
+     * 
+     * Depth: Given depth. Unless specified, 5 is used.
+     * Heuristic: Given evaluator method. Unless specified default_evaluator is used.
+     * 
+     * @tparam eval_type The evaluator type. This must be derived from evaluator class.
+     */
     template <typename eval_type = default_evaluator>
     class move_resolver
     {
         static_assert(std::is_base_of<evaluator<typename eval_type::res_type>, eval_type>::value,
             "eval_type should inherit from evaluator<eval_type::res_type>");
     public:
+        /**
+         * @brief Creates a move resolver with a given depth.
+         * 
+         * @param depth Given depth.
+         */
         move_resolver(const int & depth);
+
+        /**
+         * @brief Creates a move resolver with the default depth.
+         * 
+         */
         move_resolver();
+
+        /**
+         * @brief Destructs the move resolver.
+         * 
+         */
         ~move_resolver();
 
+        /**
+         * @brief The number of evaluated leaf nodes.
+         * 
+         */
         int evaluated = 0;
 
         typedef typename eval_type::res_type res_type;
+
+        /**
+         * @brief Resolves the next move for a given board, given last opponent move and a given player side.
+         * 
+         * Use with caution because this does not verify the color of the mover of the last opponent move and the color
+         *  are different.
+         * 
+         * @param board Existing board.
+         * @param last_opp_move The last opponent move.
+         * @param color Color of the player.
+         * @return move The optimal move according to the given alpha beta pruning heuristic and depth.
+         */
         move resolve(board * board, const move& last_opp_move, piece::color_type color);
+
     private:
+
+        /**
+         * @brief Heuristic evaluator.
+         * 
+         */
         eval_type * _eval;
+
+        /**
+         * @brief Depth of the alpha beta pruning tree.
+         * 
+         */
         int _depth = 5;
+
+        /**
+         * @brief Color of the player.
+         * 
+         */
         piece::color_type _color;
 
+        /**
+         * @brief The recursive alpha beta pruning function. Call at any node to create and traverse a tree with a given depth.
+         * 
+         * @param board Existing board.
+         * @param alpha Lower (alpha) bound of the best heuristic value.
+         * @param beta Upper (beta) bound of the best heuristic value.
+         * @param color Current color at the tree node. Use to identify the node a min node or a max node.
+         * @param last_opp_move The last opponent move.
+         * @param depth The depth left to create the tree.
+         * @return res_type The chosen heuristic value fron the underneath nodes. 
+         */
         const res_type _a_b_prune(board * board, res_type alpha, res_type beta, piece::color_type color, const move& last_opp_move, int depth);
     };
 
