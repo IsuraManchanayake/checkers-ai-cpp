@@ -223,14 +223,6 @@ namespace checkers_AI {
         return blance_pieces_;
     }
 
-    // Use only for testing
-    std::vector<move> board::list_all_moves() {
-        std::vector<move> red_moves_ = _list_all_raw_moves(piece::color_type::red);
-        std::vector<move> black_moves_ = _list_all_raw_moves(piece::color_type::black);
-        red_moves_.insert(red_moves_.end(), black_moves_.begin(), black_moves_.end());
-        return red_moves_;
-    }
-
     std::vector<move> board::list_all_moves(const move& last_move, piece* mover) {
         std::vector<piece*> blance_pieces_ = list_blance_pieces(last_move);
         std::vector<move> moves_ = _list_all_raw_moves(mover);
