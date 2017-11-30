@@ -16,17 +16,6 @@ namespace checkers_AI {
     class default_evaluator : public evaluator<int>
     {
     public:
-        /**
-         * @brief Creates the evaluator.
-         * 
-         */
-        default_evaluator();
-
-        /**
-         * @brief Destroys the evaluator.
-         * 
-         */
-        ~default_evaluator();
 
         /**
          * @brief Evaluates a given board for a given player color.
@@ -39,6 +28,6 @@ namespace checkers_AI {
          * @param color_type Color of the player.
          * @return int Evaluated heuristic value.
          */
-        const int evaluate(board* board, const piece::color_type color);
+        const int evaluate(board* board, const piece::color_type color) const;
     };
 }

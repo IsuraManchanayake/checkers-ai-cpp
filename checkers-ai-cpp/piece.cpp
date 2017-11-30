@@ -9,11 +9,11 @@ namespace checkers_AI {
 
     piece* piece::_empty_piece = nullptr;
 
-    piece::piece(const int & x, const int & y, const piece::color_type& color, const int& id)
+    piece::piece(const int x, const int y, const piece::color_type color, const int id)
         : pos(x, y), color(color), id(id) {
     }
 
-    piece::piece(const vec & v, const color_type & col, const int & id)
+    piece::piece(const vec& v, const color_type col, const int id)
         : pos(v), color(color), id(id) {
     }
 
@@ -29,7 +29,7 @@ namespace checkers_AI {
         return _empty_piece;
     }
 
-    piece * piece::create_piece(const vec & v, const char & char_repr, const int & id) {
+    piece* piece::create_piece(const vec& v, const char char_repr, const int id) {
         piece* instance = new piece();
         instance->id = id;
         instance->pos = v;
@@ -56,7 +56,7 @@ namespace checkers_AI {
         return instance;
     }
 
-    std::ostream & operator<<(std::ostream & os, piece* piece) {
+    std::ostream& operator<<(std::ostream& os, piece* piece) {
         if (piece->is_empty) {
             os << "   ";
         }
@@ -82,7 +82,7 @@ namespace checkers_AI {
         return os;
     }
 
-    piece::color_type operator!(piece::color_type color) {
+    piece::color_type operator!(const piece::color_type color) {
         return color == piece::color_type::red ? piece::color_type::black : piece::color_type::red;
     }
 }

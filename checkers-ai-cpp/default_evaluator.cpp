@@ -10,14 +10,8 @@ namespace checkers_AI {
     const int default_evaluator::lost_value = -1000;
     const int default_evaluator::draw_value = 0;
 
-    default_evaluator::default_evaluator() {
-    }
-
-    default_evaluator::~default_evaluator() {
-    }
-
-    const int default_evaluator::evaluate(board * board, piece::color_type color) {
-        int score = board->stat->r - board->stat->b + 10 * (board->stat->R - board->stat->B);
+    const int default_evaluator::evaluate(board* board, const piece::color_type color) const {
+        int score = board->stat.r - board->stat.b + 10 * (board->stat.R - board->stat.B);
         return color == piece::color_type::red ? score : -score;
     }
 }

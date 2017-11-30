@@ -51,7 +51,7 @@ namespace checkers_AI {
          * This can be used in evaluators. 
          * 
          */
-        board_stat* stat = new board_stat();
+        board_stat stat;
 
         /**
          * @brief Retrieves a raw of the board as an array.
@@ -59,7 +59,7 @@ namespace checkers_AI {
          * @param raw The raw position.
          * @return piece** The raw of board with the given position.
          */
-        piece** operator[](const int& raw);
+        piece** operator[](const int raw);
 
         /**
          * @brief Executes a move in the board.
@@ -101,7 +101,7 @@ namespace checkers_AI {
          * @param color The specific player color to list moves.
          * @return std::vector<move> Listed moves.
          */
-        std::vector<move> list_all_moves(const move& last_move, piece::color_type color);
+        std::vector<move> list_all_moves(const move& last_move, const piece::color_type color);
 
         /**
          * @brief Lists down all the possible blance pieces for a given last opponent move.
@@ -117,7 +117,7 @@ namespace checkers_AI {
          * @param pos Position co-ordinate vector.
          * @return piece*& Settable piece of the board.
          */
-        piece* & operator[](const vec & pos);
+        piece*& operator[](const vec& pos);
 
         /**
          * @brief Getter for board indexed by a co-ordinate vector.
@@ -125,7 +125,7 @@ namespace checkers_AI {
          * @param pos Position co-ordinate vector.
          * @return piece* Gettable const piece of the board.
          */
-        piece* operator[](const vec & pos) const;
+        piece* operator[](const vec& pos) const;
 
     private:
         /**
@@ -142,7 +142,7 @@ namespace checkers_AI {
          * @param pos Co-ordinate vector to validate.
          * @return bool Validity of the co-oridinate vector.
          */
-        bool _validate_position(const vec & pos) const;
+        const bool _validate_position(const vec& pos) const;
 
         /**
          * @brief Validates the position that it is inside the board and it is empty.
@@ -152,7 +152,7 @@ namespace checkers_AI {
          * @param pos Co-ordinate vector to validate
          * @return bool Validity of the co-oridinate vector. 
          */
-        bool _occupiable(const vec & pos) const;
+        const bool _occupiable(const vec& pos) const;
 
         /**
          * @brief A helper recursive function that checks captures of a piece that outs a list possible of moves with captures.  
@@ -162,7 +162,7 @@ namespace checkers_AI {
          * @param moves List of possible moves to fill-in after incoming captures.
          * @param captures Captured pieces so far.
          */
-        void _list_more_captures(piece* mover, const vec start, std::vector<move>& moves, std::vector<piece*> captures);
+        void _list_more_captures(piece* mover, const vec& start, std::vector<move>& moves, std::vector<piece*> captures);
 
         /**
          * @brief Checks that captures are available for a piece.
@@ -201,7 +201,7 @@ namespace checkers_AI {
          * @param color Player's color.
          * @return std::vector<move> List of all possible moves without blance pieces.
          */
-        std::vector<move> _list_all_raw_moves(piece::color_type color);
+        std::vector<move> _list_all_raw_moves(const piece::color_type color);
 
         /**
          * @brief Lists all possible moves for a piece without considering the last opponent move ie. result does not 

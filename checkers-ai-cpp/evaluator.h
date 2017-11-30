@@ -58,6 +58,6 @@ namespace checkers_AI {
          * @param color_type Color of the player.
          * @return res_type Evaluated heuristic value.
          */
-        virtual const res_type evaluate(board * board, const piece::color_type) = 0;
+        virtual const res_type evaluate(board*, const piece::color_type) const = 0;
     }; 
 }

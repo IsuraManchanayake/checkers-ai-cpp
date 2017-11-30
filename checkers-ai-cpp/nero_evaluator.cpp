@@ -1,5 +1,6 @@
 #include <climits>
 
+#include "board.h"
 #include "nero_evaluator.h"
 
 namespace checkers_AI {
@@ -9,13 +10,7 @@ namespace checkers_AI {
     const float nero_evaluator::lost_value = -1000.0f;
     const float nero_evaluator::draw_value = 0.0f;
 
-    nero_evaluator::nero_evaluator() {
-    }
-
-    nero_evaluator::~nero_evaluator() {
-    }
-
-    const float nero_evaluator::evaluate(board * board, const piece::color_type color) {
+    const float nero_evaluator::evaluate(board* board, const piece::color_type color) const {
         float red_score_ = 0.0;
         float black_score_ = 0.0;
         for (int y = 0; y < board_height; y++) {
@@ -29,7 +24,7 @@ namespace checkers_AI {
         return color == piece::color_type::red ? red_score_ - black_score_ : black_score_ - red_score_;
     }
 
-    const float nero_evaluator::_eval_piece_position(board* board, piece * piece) {
+    const float nero_evaluator::_eval_piece_position(board* board, piece* piece) const {
         float piece_value_;
         if (piece->is_queen) {
             piece_value_ = 10.0;
@@ -55,7 +50,7 @@ namespace checkers_AI {
         return piece_value_;
     }
 
-    const bool nero_evaluator::_validate(const vec & pos) {
+    const bool nero_evaluator::_validate(const vec& pos) const {
         return pos.x > 0 && pos.x < board_width && pos.y > 0 && pos.y < board_height;
     }
 }

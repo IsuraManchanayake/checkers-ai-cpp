@@ -52,7 +52,7 @@ namespace checkers_AI {
          * @param x x value of the target co-ordinate.
          * @param y y value of the target co-ordinate.
          */
-        move(piece* mover, const int& x, const int& y);
+        move(piece* mover, const int x, const int y);
 
         /**
          * @brief Creates a move with given mover and target co-ordinate vector.
@@ -70,7 +70,7 @@ namespace checkers_AI {
          * @param y y value of the target co-ordinate.
          * @param capture_pieces List of capturing pieces.
          */
-        move(piece* mover, const int& x, const int& y, std::vector<piece*> capture_pieces);
+        move(piece* mover, const int x, const int y, std::vector<piece*> capture_pieces);
 
         /**
          * @brief Creates a move with given mover, target co-oridinate vector and list of capturing pieces.

@@ -31,7 +31,7 @@ namespace checkers_AI {
          * 
          * @param depth Given depth.
          */
-        move_resolver(const int & depth);
+        move_resolver(const int depth);
 
         /**
          * @brief Creates a move resolver with the default depth.
@@ -64,7 +64,7 @@ namespace checkers_AI {
          * @param color Color of the player.
          * @return move The optimal move according to the given alpha beta pruning heuristic and depth.
          */
-        move resolve(board * board, const move& last_opp_move, piece::color_type color);
+        move resolve(board* board, const move& last_opp_move, const piece::color_type color);
 
     private:
 
@@ -72,7 +72,7 @@ namespace checkers_AI {
          * @brief Heuristic evaluator.
          * 
          */
-        eval_type * _eval;
+        eval_type* _eval;
 
         /**
          * @brief Depth of the alpha beta pruning tree.
@@ -97,11 +97,11 @@ namespace checkers_AI {
          * @param depth The depth left to create the tree.
          * @return res_type The chosen heuristic value fron the underneath nodes. 
          */
-        const res_type _a_b_prune(board * board, res_type alpha, res_type beta, piece::color_type color, const move& last_opp_move, int depth);
+        const res_type _a_b_prune(board* board, res_type alpha, res_type beta, piece::color_type color, const move& last_opp_move, const int depth);
     };
 
     template<typename eval_type>
-    move_resolver<eval_type>::move_resolver(const int & depth)
+    move_resolver<eval_type>::move_resolver(const int depth)
         : _depth(depth) {
         _eval = new eval_type();
     }
@@ -117,7 +117,7 @@ namespace checkers_AI {
     }
 
     template<typename eval_type>
-    inline move move_resolver<eval_type>::resolve(board * board, const move& last_opp_move, piece::color_type color) {
+    inline move move_resolver<eval_type>::resolve(board* board, const move& last_opp_move, const piece::color_type color) {
         _color = color;
         std::vector<move> valid_moves_ = board->list_all_moves(last_opp_move, color);
         if (std::any_of(valid_moves_.cbegin(), valid_moves_.cend(),
@@ -131,7 +131,7 @@ namespace checkers_AI {
         res_type alpha_ = eval_type::min_value;
         res_type beta_ = eval_type::max_value;
         std::shuffle(valid_moves_.begin(), valid_moves_.end(), std::default_random_engine(std::random_device()()));
-        for (auto & move : valid_moves_) {
+        for (auto& move : valid_moves_) {
             board->execute_move(move);
             res_type v_ = _a_b_prune(board, alpha_, beta_, !color, move, _depth - 1);
             board->reverse_move(move);
@@ -145,8 +145,8 @@ namespace checkers_AI {
 
     template<typename eval_type>
     inline const typename eval_type::res_type
-        move_resolver<eval_type>::_a_b_prune(board * board, res_type alpha, res_type beta, piece::color_type color, const move& last_opp_move, int depth) {
-        game_result gr_ = board->stat->get_board_result();
+        move_resolver<eval_type>::_a_b_prune(board* board, res_type alpha, res_type beta, piece::color_type color, const move& last_opp_move, const int depth) {
+        game_result gr_ = board->stat.get_board_result();
         if (gr_ == game_result::black) {
             return color == piece::color_type::black ? eval_type::win_value : eval_type::lost_value;
         }
@@ -165,7 +165,7 @@ namespace checkers_AI {
             res_type v_ = eval_type::min_value;
             sort(valid_moves_.begin(), valid_moves_.end(), 
                 [](const move& move_1, const move& move_2) { return move_1.capture_pieces.size() > move_2.capture_pieces.size(); });
-            for (auto & move : valid_moves_) {
+            for (auto& move : valid_moves_) {
                 board->execute_move(move);
                 res_type best_ = _a_b_prune(board, alpha, beta, !color, move, depth - 1);
                 if (v_ < best_) {
@@ -185,7 +185,7 @@ namespace checkers_AI {
             res_type v_ = eval_type::max_value;
             sort(valid_moves_.begin(), valid_moves_.end(),
                 [](const move& move_1, const move& move_2) { return move_1.capture_pieces.size() < move_2.capture_pieces.size(); });
-            for (auto & move : valid_moves_) {
+            for (auto& move : valid_moves_) {
                 board->execute_move(move);
                 res_type best_ = _a_b_prune(board, alpha, beta, !color, move, depth - 1);
                 if (v_ > best_) {

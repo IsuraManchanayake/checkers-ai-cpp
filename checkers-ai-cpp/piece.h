@@ -55,7 +55,7 @@ namespace checkers_AI {
          * @param col Color of the piece.
          * @param id Identifier of the piece.
          */
-        piece(const int& x, const int& y, const color_type& col, const int& id);
+        piece(const int x, const int y, const color_type col, const int id);
 
         /**
          * @brief Creates a piece with given co-ordinate, color and an identifier.
@@ -64,7 +64,7 @@ namespace checkers_AI {
          * @param col Color of the piece.
          * @param id Identifier of the piece.
          */
-        piece(const vec& v, const color_type& col, const int& id);
+        piece(const vec& v, const color_type col, const int id);
 
         /**
          * @brief Returns the singleton empty piece.
@@ -93,7 +93,7 @@ namespace checkers_AI {
          * @param id Identifier of the piece.
          * @return piece* Created piece pointer.
          */
-        static piece* create_piece(const vec & v, const char & char_repr, const int & id);
+        static piece* create_piece(const vec& v, const char char_repr, const int id);
 
         //
         // ──────────────────────────────── CONSTRUCTORS AND FACTORIES ─────
@@ -172,7 +172,7 @@ namespace checkers_AI {
      * @param color Color to flip.
      * @return piece::color_type Flipped color.
      */
-    piece::color_type operator!(piece::color_type color);
+    piece::color_type operator!(const piece::color_type color);
 
     //
     // ─────────────────────────────────────────────────────── OPERATOR OVERLOADS ─────

@@ -9,31 +9,23 @@ namespace checkers_AI {
     board_stat::~board_stat() {
     }
 
-    board_stat & board_stat::operator+=(const piece * piece) {
-        if (!piece->is_empty) {
-            if (piece->is_queen) {
-                piece->color == piece::color_type::red ? R++ : B++;
-            }
-            else {
-                piece->color == piece::color_type::red ? r++ : b++;
-            }
-        }
+    board_stat& board_stat::operator+=(const piece * piece) {
+        if (!piece->is_empty)
+            piece->is_queen ?
+                piece->color == piece::color_type::red ? R++ : B++
+                : piece->color == piece::color_type::red ? r++ : b++;
         return *this;
     }
 
-    board_stat & board_stat::operator-=(const piece * piece) {
-        if (!piece->is_empty) {
-            if (piece->is_queen) {
-                piece->color == piece::color_type::red ? R-- : B--;
-            }
-            else {
-                piece->color == piece::color_type::red ? r-- : b--;
-            }
-        }
+    board_stat& board_stat::operator-=(const piece* piece) {
+        if (!piece->is_empty)
+            piece->is_queen ?
+            piece->color == piece::color_type::red ? R-- : B--
+            : piece->color == piece::color_type::red ? r-- : b--;
         return *this;
     }
 
-    board_stat & board_stat::operator+=(const move& move) {
+    board_stat& board_stat::operator+=(const move& move) {
         for (piece* capture_piece : move.capture_pieces) {
             *this -= capture_piece;
         }
@@ -46,7 +38,7 @@ namespace checkers_AI {
         return *this;
     }
 
-    board_stat & board_stat::operator-=(const move& move) {
+    board_stat& board_stat::operator-=(const move& move) {
         for (piece* capture_piece : move.capture_pieces) {
             *this += capture_piece;
         }
@@ -59,7 +51,7 @@ namespace checkers_AI {
         return *this;
     }
 
-    const int board_stat::get_count(piece::color_type color) {
+    const int board_stat::get_count(const piece::color_type color) const {
         return color == piece::color_type::red ? r + R : b + B;
     }
 
@@ -78,10 +70,10 @@ namespace checkers_AI {
         return game_result::play;
     }
 
-    std::ostream & operator<<(std::ostream & os, board_stat *& stat) {
-        os << "board statistics - [r:" << stat->r << "][b:" << stat->b << "][R:" 
-           << stat->R << "][B:" << stat->B << "]" << std::endl
-           << "total pieces - red: " << stat->get_count(piece::color_type::red) << " black: " << stat->get_count(piece::color_type::black);
+    std::ostream& operator<<(std::ostream& os, const board_stat& stat) {
+        os << "board statistics - [r:" << stat.r << "][b:" << stat.b << "][R:"
+            << stat.R << "][B:" << stat.B << "]" << std::endl
+            << "total pieces - red: " << stat.get_count(piece::color_type::red) << " black: " << stat.get_count(piece::color_type::black);
         return os;
     }
 }

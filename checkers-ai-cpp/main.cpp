@@ -20,7 +20,7 @@ void move_test_1() {
 
 void move_test_2() {
     board* board_ = new board();
-    std::vector<move> valid_moves = board_->list_all_moves();
+    std::vector<move> valid_moves = board_->list_all_moves(move::create_empty(), piece::color_type::red);
     cout << board_ << endl;
     for (auto& move : valid_moves) {
         cout << move << endl;
@@ -41,7 +41,7 @@ void create_board_test_1() {
         { '-', '-', '-', '-', '-', '-', '-', '-', '-', '-' },
         { '-', '-', '-', '-', '-', '-', '-', '-', '-', '-' },
     });
-    std::vector<move> valid_moves = board_->list_all_moves();
+    std::vector<move> valid_moves = board_->list_all_moves(move::create_empty(), piece::color_type::red);
     cout << board_ << endl;
     cout << board_->stat << endl;
     for (auto & move : valid_moves) {

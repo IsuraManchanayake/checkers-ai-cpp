@@ -22,7 +22,7 @@ namespace checkers_AI {
          * @param x Horizontal co-ordinate value. Increases in the direction of right.
          * @param y Vertical co-ordinate value. Increases in the direction of down.
          */
-        vec(const int& x, const int& y);
+        vec(const int x, const int y);
 
         //
         // ────────────────────────────────────────────── CONSTRUCTORS ─────
@@ -58,7 +58,7 @@ namespace checkers_AI {
          * @param rhs Co-ordinate to multiply.
          * @return vec Product after multiplication.
          */
-        friend vec operator*(const int& lhs, vec rhs);
+        friend vec operator*(const int lhs, vec rhs);
 
         /**
          * @brief Multiplies a co-ordinate by an integer same as vector multiplication.
@@ -67,7 +67,7 @@ namespace checkers_AI {
          * @param rhs Multiplication factor.
          * @return vec Product after multiplication.
          */
-        friend vec operator*(vec lhs, const int& rhs);
+        friend vec operator*(vec lhs, const int rhs);
 
         /**
          * @brief Writes co-ordinate to given ostream.
@@ -86,7 +86,7 @@ namespace checkers_AI {
          * @param rhs Co-ordinate to add.
          * @return vec& Result co-ordinate.
          */
-        vec & operator+=(const vec & rhs);
+        vec& operator+=(const vec& rhs);
 
         //
         // ──────────────────────────────────────── OPERATOR OVERLOADS ─────
